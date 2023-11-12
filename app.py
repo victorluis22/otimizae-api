@@ -22,12 +22,12 @@ def mainRoute():
 def goldenSearchRoute():
     data = request.get_json()
     tableData = {
-        'Iteração': [],
+        'time': [],
         'd': [],
         'x1': [],
-        'f(x1)': [],
+        'fx1': [],
         'x2': [],
-        'f(x2)': [],
+        'fx2': [],
         'a': [],
         'b': [],
     } 
