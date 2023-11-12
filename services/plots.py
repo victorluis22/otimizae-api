@@ -3,15 +3,14 @@ from io import BytesIO
 from matplotlib.figure import Figure
 import numpy as np
 
-def f(function, x):
-  return eval(function)
+from services.evaluate import f
 
 def plot2D(function, resultx, resulty, min, max, step=0.1):
   fig = Figure()
   ax = fig.subplots()
   ax.set_xlabel('x')
   ax.set_ylabel('f(x)')
-  ax.set_title(f'Gráfico da função f(x) = {function}', fontsize=20)
+  ax.set_title(f'f(x) = {function}', fontsize=20)
   ax.grid(True)
 
   x_values = np.arange(min, max+step, step)
@@ -24,8 +23,6 @@ def plot2D(function, resultx, resulty, min, max, step=0.1):
   buf = BytesIO()
   fig.savefig(buf, format="png")
   data = base64.b64encode(buf.getbuffer()).decode("ascii")
-
-  fig.savefig("result.png")
 
   return data
   

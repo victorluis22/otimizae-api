@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 import datetime
 
@@ -21,9 +21,20 @@ def mainRoute():
 @cross_origin()
 def goldenSearchRoute():
     data = request.get_json()
+    tableData = {
+        'Iteração': [],
+        'd': [],
+        'x1': [],
+        'f(x1)': [],
+        'x2': [],
+        'f(x2)': [],
+        'a': [],
+        'b': [],
+    } 
+
     try:
         function, a, b, limit = data["function"], data["interval"][0], data["interval"][1], data["limit"]
-        [x, fx, time] = goldenSectionSearch(function, a, b, limit)
+        [x, fx, time] = goldenSectionSearch(tableData, function, a, b, limit)
         
         base64Image = plot2D(function, x, fx, a, b)
 
@@ -32,11 +43,13 @@ def goldenSearchRoute():
                 "x": x,
                 "fx": fx,
                 "time": time,
-                "img": base64Image
+                "img": base64Image,
+                "data": tableData
             }
         ), 200
+    except NameError as error:
+        return jsonify({"error": error.args[0]}), 400
     except Exception as error:
-        print(error)
         return jsonify({"error": "Erro interno do servidor"}), 500
 
     
