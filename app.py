@@ -3,6 +3,7 @@ from flask_cors import CORS, cross_origin
 import datetime
 
 from methods.goldenSearch import goldenSectionSearch
+from methods.bissectionSearch import bissectionSearch
 from services.plots import plot2D
 
 now = datetime.datetime.now()
@@ -52,6 +53,40 @@ def goldenSearchRoute():
     except Exception as error:
         return jsonify({"error": "Erro interno do servidor"}), 500
 
+
+@app.route('/bissectionSearch', methods=['POST'])
+@cross_origin()
+def bissectionRoute():
+    data = request.get_json()
+    
+    tableData = {
+        'time': [],
+        'lmbda': [],
+        'flmbda': [],
+        'a': [],
+        'b': [],
+    } 
+
+    try:
+        function, a, b, limit = data["function"], data["interval"][0], data["interval"][1], data["limit"]
+        [x, fx, time] = bissectionSearch(tableData, function, a, b, limit)
+        
+        base64Image = plot2D(function, x, fx, a, b)
+
+        return jsonify(
+            {
+                "x": x,
+                "fx": fx,
+                "time": time,
+                "img": base64Image,
+                "data": tableData
+            }
+        ), 200
+    except NameError as error:
+        return jsonify({"error": error.args[0]}), 400
+    except Exception as error:
+        print(error)
+        return jsonify({"error": "Erro interno do servidor"}), 500
     
 if __name__ == '__main__':
     app.run(debug=True)

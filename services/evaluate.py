@@ -15,3 +15,7 @@ def f(expression, x):
             raise NameError(f"O uso de '{name}' não é reconhecido")
 
     return eval(code, {"__builtins__": {}, "x": x}, ALLOWED_NAMES)
+
+def deriv_f(function, x, h=0.000001):
+  """Evaluate the derivative of a math expression."""
+  return (f(function, x+h)-f(function, x))/h

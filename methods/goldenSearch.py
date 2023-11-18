@@ -24,13 +24,3 @@ def goldenSectionSearch(data, function, start, end, limit=0.00001):
       a = x2
 
     time += 1
-
-
-if __name__ == '__main__':
-    function = "x**2 - 6*x + 15"
-    a = -10
-    b = 10
-
-    minimun = goldenSectionSearch(function, a, b)
-
-    print(f'Mínimo encontrado entre [{a}, {b}] = {minimun}\n')

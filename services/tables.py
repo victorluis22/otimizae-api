@@ -7,3 +7,10 @@ def addGoldenData (data, time, d, x1, fx1, x2, fx2, a, b):
   data['fx2'].append(fx2)
   data['a'].append(a)
   data['b'].append(b)
+
+def addBissectionData (data, time, lmbda, flmbda, a, b):
+  data['time'].append(time)
+  data['lmbda'].append(lmbda)
+  data['flmbda'].append(flmbda)
+  data['a'].append(a)
+  data['b'].append(b)
