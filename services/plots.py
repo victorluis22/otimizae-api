@@ -6,6 +6,7 @@ import numpy as np
 from services.evaluate import f
 
 def plot2D(function, resultx, resulty, min, max, step=0.1):
+  """Uses Matplotlib to render a 2D graph of the function given an interval"""
   fig = Figure()
   ax = fig.subplots()
   ax.set_xlabel('x')

@@ -4,6 +4,7 @@ import datetime
 
 from methods.goldenSearch import goldenSectionSearch
 from methods.bissectionSearch import bissectionSearch
+from methods.newtonSearch import newtonSearch
 from services.plots import plot2D
 
 now = datetime.datetime.now()
@@ -50,9 +51,11 @@ def goldenSearchRoute():
         ), 200
     except NameError as error:
         return jsonify({"error": error.args[0]}), 400
+    except TimeoutError as error:
+        return jsonify({"error": error.args[0]}), 408
     except Exception as error:
+        print(error)
         return jsonify({"error": "Erro interno do servidor"}), 500
-
 
 @app.route('/bissectionSearch', methods=['POST'])
 @cross_origin()
@@ -84,9 +87,47 @@ def bissectionRoute():
         ), 200
     except NameError as error:
         return jsonify({"error": error.args[0]}), 400
+    except TimeoutError as error:
+        return jsonify({"error": error.args[0]}), 408
     except Exception as error:
         print(error)
         return jsonify({"error": "Erro interno do servidor"}), 500
     
+@app.route('/newtonSearch', methods=['POST'])
+@cross_origin()
+def newtonRoute():
+    data = request.get_json()
+    
+    tableData = {
+        'time': [],
+        'lmbda': [],
+        'firstderiv': [],
+        'secondderiv': [],
+        'lmbdanext': [],
+    }   
+
+    try:
+        function, initialValue, a, b, limit = data["function"], data["initialValue"], data["interval"][0], data["interval"][1], data["limit"]
+        [x, fx, time] = newtonSearch(tableData, function, initialValue, limit)
+        
+        base64Image = plot2D(function, x, fx, a, b)
+
+        return jsonify(
+            {
+                "x": x,
+                "fx": fx,
+                "time": time,
+                "img": base64Image,
+                "data": tableData
+            }
+        ), 200
+    except NameError as error:
+        return jsonify({"error": error.args[0]}), 400
+    except TimeoutError as error:
+        return jsonify({"error": error.args[0]}), 408
+    except Exception as error:
+        print(error)
+        return jsonify({"error": "Erro interno do servidor"}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)

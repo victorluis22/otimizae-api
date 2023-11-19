@@ -5,7 +5,7 @@ ALLOWED_NAMES = {
 }
 
 def f(expression, x):
-    """Evaluate a math expression."""
+    """Evaluates a math expression."""
     # Compile the expression
     code = compile(expression, "<string>", "eval")
 
@@ -17,5 +17,10 @@ def f(expression, x):
     return eval(code, {"__builtins__": {}, "x": x}, ALLOWED_NAMES)
 
 def deriv_f(function, x, h=0.000001):
-  """Evaluate the derivative of a math expression."""
-  return (f(function, x+h)-f(function, x))/h
+  """Evaluates the first order derivative of a math expression."""
+  return (f(function, x + h) - f(function, x - h))/(2*h)
+
+
+def deriv2_f(function, x, h=0.000001):
+  """Evaluates the second order derivative of a math expression."""
+  return (f(function, x-h) + f(function, x+h) - 2*f(function, x))/(h**2)

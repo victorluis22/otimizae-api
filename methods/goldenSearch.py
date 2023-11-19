@@ -5,8 +5,10 @@ def goldenSectionSearch(data, function, start, end, limit=0.00001):
   goldenRatio = (5**(1/2) - 1) / (2)
   time = 0
   a, b = start, end
+  timeout = 100
 
-  while time < 100:
+  while time < timeout:
+    
     d = goldenRatio * (b - a)
     x1 = a + d
     x2 = b - d
@@ -24,3 +26,5 @@ def goldenSectionSearch(data, function, start, end, limit=0.00001):
       a = x2
 
     time += 1
+  
+  raise TimeoutError(f"Algum erro aconteceu, programa demorou muito para responder.")
